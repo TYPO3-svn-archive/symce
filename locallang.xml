@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for extension 'symce'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="pi1_title">Symlink Content Element</label>
+			<label index="pi1_plus_wiz_description">Includes an existing Content Element without copying it</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pi1_title">Symbolisches Inhaltselement</label>
+			<label index="pi1_plus_wiz_description">Zeigt ein bestehendes Inhaltselement an, ohne es zu kopieren</label>
+		</languageKey>
+	</data>
+</T3locallang>
