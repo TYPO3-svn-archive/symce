@@ -41,7 +41,7 @@ class tx_symce_pi1 extends tslib_pibase {
 	var $prefixId      = 'tx_symce_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_symce_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'symce';	// The extension key.
-	var $pi_checkCHash = true;
+	var $pi_checkCHash = false;
 	
 	/**
 	 * The main method of the PlugIn
@@ -52,25 +52,36 @@ class tx_symce_pi1 extends tslib_pibase {
 	 */
 	function main($content, $conf) {
 		$this->conf = $conf;
-		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL();
 		
-	
-		$content='
-			<strong>This is a few paragraphs:</strong><br />
-			<p>This is line 1</p>
-			<p>This is line 2</p>
-	
-			<h3>This is a form:</h3>
-			<form action="'.$this->pi_getPageLink($GLOBALS['TSFE']->id).'" method="POST">
-				<input type="text" name="'.$this->prefixId.'[input_field]" value="'.htmlspecialchars($this->piVars['input_field']).'">
-				<input type="submit" name="'.$this->prefixId.'[submit_button]" value="'.htmlspecialchars($this->pi_getLL('submit_button_label')).'">
-			</form>
-			<br />
-			<p>You can click here to '.$this->pi_linkToPage('get to this page again',$GLOBALS['TSFE']->id).'</p>
-		';
-	
-		return $this->pi_wrapInBaseClass($content);
+		$recConfig = array(
+			'source' => $this->cObj->data['records'],
+			'tables' => 'tt_content'
+		);
+		
+		if (!$conf['conf'] && !$conf['conf.'] && (!$conf['keepHeaders'] || !$conf['keepStdWrap'])) {
+			$recConfig['conf.'] = array(
+				'tt_content' => $GLOBALS['TSFE']->tmpl->setup['tt_content'],
+				'tt_content.' => $GLOBALS['TSFE']->tmpl->setup['tt_content.']
+			);
+			if (!$conf['keepHeaders']) {
+				foreach ($recConfig['conf.']['tt_content.'] as $key => $item) {
+					if (key != 'setup') {
+						$recConfig['conf.']['tt_content.'][$key]['10'] = null;
+						$recConfig['conf.']['tt_content.'][$key]['10.'] = null;
+					}
+				}
+			}
+			if (!$conf['keepStdWrap']) {
+				unset($recConfig['conf.']['tt_content.']['stdWrap.']);
+			}
+		}elseif ($conf['conf'] && $conf['conf.']){
+			$recConfig['conf.'] = array(
+				'tt_content' => $conf['conf'],
+				'tt_content.' => $conf['conf.']
+			);
+		}
+		
+		return $this->cObj->cObjGetSingle('RECORDS', $recConfig);
 	}
 }
 
