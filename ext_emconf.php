@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Symlink Content Elements',
-	'description' => '',
+	'description' => 'Includes an existing Content Element without copying it',
 	'category' => 'plugin',
 	'author' => 'Christian Opitz',
 	'author_email' => 'co@netzelf.de',

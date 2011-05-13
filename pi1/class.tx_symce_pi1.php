@@ -58,12 +58,15 @@ class tx_symce_pi1 extends tslib_pibase {
 			'tables' => 'tt_content'
 		);
 		
-		if (!$conf['conf'] && !$conf['conf.'] && (!$conf['keepHeaders'] || !$conf['keepStdWrap'])) {
+		$removeHeaders = !empty($this->cObj->data['header']) || $conf['removeHeaders'];
+		$removeStdWrap = isset($conf['removeStdWrap']) ? $conf['removeStdWrap'] : true;
+		
+		if (!$conf['conf'] && !$conf['conf.'] && ($removeHeaders || $removeStdWrap)) {
 			$recConfig['conf.'] = array(
 				'tt_content' => $GLOBALS['TSFE']->tmpl->setup['tt_content'],
 				'tt_content.' => $GLOBALS['TSFE']->tmpl->setup['tt_content.']
 			);
-			if (!$conf['keepHeaders']) {
+			if ($removeHeaders) {
 				foreach ($recConfig['conf.']['tt_content.'] as $key => $item) {
 					if (key != 'setup') {
 						$recConfig['conf.']['tt_content.'][$key]['10'] = null;
@@ -71,7 +74,7 @@ class tx_symce_pi1 extends tslib_pibase {
 					}
 				}
 			}
-			if (!$conf['keepStdWrap']) {
+			if ($removeStdWrap) {
 				unset($recConfig['conf.']['tt_content.']['stdWrap.']);
 			}
 		}elseif ($conf['conf'] && $conf['conf.']){
